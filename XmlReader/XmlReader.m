@@ -27,7 +27,6 @@ NSString *const kXMLReaderTextNodeKey = @"text";
 {
     XMLReader *reader = [[XMLReader alloc] initWithError:error];
     NSDictionary *rootDictionary = [reader objectWithData:data];
-    [reader release];
     return rootDictionary;
 }
 
@@ -49,19 +48,9 @@ NSString *const kXMLReaderTextNodeKey = @"text";
     return self;
 }
 
-- (void)dealloc
-{
-    [dictionaryStack release];
-    [textInProgress release];
-    [super dealloc];
-}
-
 - (NSDictionary *)objectWithData:(NSData *)data
 {
     // Clear out any old data
-    [dictionaryStack release];
-    [textInProgress release];
-    
     dictionaryStack = [[NSMutableArray alloc] init];
     textInProgress = [[NSMutableString alloc] init];
     
@@ -139,7 +128,6 @@ NSString *const kXMLReaderTextNodeKey = @"text";
         [dictInProgress setObject:textInProgress forKey:kXMLReaderTextNodeKey];
         
         // Reset the text
-        [textInProgress release];
         textInProgress = [[NSMutableString alloc] init];
     }
     
